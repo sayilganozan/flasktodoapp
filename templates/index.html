@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+    <div style="margin-top:100px;" class="container">
+
+        <h3>Todo List</h3>
+        <hr>
+
+        <form action="/add" method="post">
+            <div class="form-group">
+                <label for="formGroupExampleInput" style="font-weight: 600;font-size: 20px;font-family: 'Times New Roman', Times, serif;" >Todo Başlık</label>
+                <input type="text" class="form-control" name="title" id="formGroupExampleInput" placeholder="Todo Girin."> <br>
+                <button type="submit" class="btn btn-danger" >Ekle</button>
+            </div>
+        </form>
+            <hr>
+            <p id="date"></p>
+
+            {% if todos == [] %}
+                <div class="alert alert-warning" role="alert">
+                    Herhangi bir Todo'nuz bulunmuyor...
+                </div>
+            
+            {% else %}
+            <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Todo Başlık</th>
+                    <th scope="col">Todo Durum</th>
+                    <th scope="col">Durum Güncelle</th>
+                    <th scope="col">Todo Sil</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                    {% for todo in todos %}
+                        
+                        
+                        <tr>
+                            <th scope="row"> {{todo.id}} </th>
+                            <td>{{todo.title}}</td>
+
+                            {% if todo.complete %}
+                                <td>Tamamlandı</td>
+                            {% else %}
+                                <td>Devam Etmekte</td>
+                            {% endif %}
+
+                            {% if todo.complete == False %}
+                                <td> <a href="/complete/{{todo.id}}" class="btn btn-success" >Tamamla</a> </td>
+                            
+                            {% else %}
+                                <td> <a href="/complete/{{todo.id}}" class="btn btn-info" >Geri Al</a> </td>
+                            {% endif %}
+
+                            
+                            <td> <a href="/delete/{{todo.id}}" class="btn btn-warning" id="{{todo.id}}" onclick="Myfunc({{todo.id}})" >Sil</a></td>
+                        </tr>
+                        
+                    {% endfor %}
+                  
+                </tbody>
+            </table>
+            {% endif %}
+
+
+              
+        
+    
+    </div>
+
+    <script>
+
+        var tag = document.getElementById("date");
+        setInterval(time,1000);
+
+        function time() {
+            var current_date = new Date();
+            tag.innerHTML = current_date;
+        }
+
+
+
+        function Myfunc(id) {
+
+            var a_tag= document.getElementById(id);
+            
+            
+            var check = confirm('Id\'si '+ id + ' olan Todo\yu silmek istediğinizden emin misiniz?');
+
+            if (check == false) {
+
+                a_tag.href = "";
+                
+            }
+            
+        }
+
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  
+</body>
+</html>
